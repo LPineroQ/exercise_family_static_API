@@ -1,11 +1,3 @@
-
-"""
-update this file to implement the following already declared methods:
-- add_member: Should add a member to the self._members list
-- delete_member: Should delete a member from the self._members list
-- update_member: Should update a member from the self._members list
-- get_member: Should return a member from the self._members list
-"""
 from random import randint
 
 class FamilyStructure:
@@ -32,30 +24,30 @@ class FamilyStructure:
             "lucky_numbers": [1]
         }]
 
-    # read-only: Use this method to generate random members ID's when adding members into the list
     def _generateId(self):
         return randint(0, 99999999)
 
-    def add_member(self, body):
-        member = {"id": self_generateId(),
-        "first_name": body["first_name"],
-        "last_name": self.last_name,
-        "age":body["age"],
-        "lucky_numbers": body["lucky_numbers"]}
-        return self._members.append(member)
+    def add_member(self, member):
+        if member["id"] is None:
+            member["id"]= self._generateId()
+        if member:
+            self._members.append(member)
+            return True
+        else:
+            return False
 
     def delete_member(self, id):
-        member = list(filter(lambda member: member["id"] == int(id), self._members))
-        if len(member)==0:
-            return False
-        self._members.remove(member[0])
-        return self._members
+        for i, member in enumerate(self._members, start=0):
+            if member["id"] == int(id):
+                self._members.pop(i)
+                return {"done": True}
+        return None
 
     def get_member(self, id):
-        member = list(filter(lambda member: member["id"] == int(id), self._members))
-        if len(member)==0:
-            return False 
-        return member[0]
+        for member in self._members:
+            if member["id"] == int(id):
+                return member
+        return {"id": "", "first_name": "", "age": "", "lucky_numbers": [] }
 
     def get_all_members(self):
         return self._members
